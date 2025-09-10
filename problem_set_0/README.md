@@ -1,6 +1,6 @@
 # Problem Set 0
-**Name:** Yu (Irene) Wang
-**NetID:** yw2247
+**Name:** Yu (Irene) Wang \\
+**NetID:** yw2247 \\
 ## Instructions to Run Code
 - Python 3.x required  
 - Install dependencies:  
