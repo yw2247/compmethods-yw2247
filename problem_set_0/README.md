@@ -21,7 +21,7 @@ human_tester(42): False<br>
 chicken_tester(43): False<br>
 human_tester(35): False<br>
 human_tester(98.6): False<br>
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ### Exercise 2:  Analyzing COVID-19 Case Data
 **2a. Function Implementation**<br> 
 (Code Appendix)<br>
@@ -89,7 +89,7 @@ Median gap (days): 14.0<br>
 Top gap values: 14 days (8 times), 21 days (1 time)
 
 These results support the hypothesis: after November 2022, Florida reported new cases biweekly, with an occasional three-week gap.
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ### Exercise 3:  Analyzing Population Data
 **3a. Load and Examine Data**<br> 
 *What columns are present in the dataset?*<br>
@@ -129,7 +129,7 @@ Below is the histogram of the weight distribution with number of bins = 20:
 <img src="plots/3b_weight.png" width="600"/>
 
 *Describe the role of the number of bins.*<br>
-*(I assumed the unit of weight is kg for the rest of the problem.)*<br>
+*(I assumed the unit of weight is kg for the rest of the exercise.)*<br>
 The number of bins decides how the weight range is split into intervals. For example, if weights range from 0 to 100 (kg) and we use 20 bins, each bin covers 5 kg (0–5, 5–10, …).
 
 *Comment on any outliers or patterns you observe in the weight distribution.*<br>
@@ -148,7 +148,7 @@ Anthony Freeman.
 
 *Explain your process for identifying this outlier.*<br>
 From the scatterplot, I noticed one point that did not follow the general relationship between age and weight: an individual older than 40 with a weight below 30 kg. To confirm, I filtered the dataset with the condition age > 40 and weight < 30, which returned this individual. Such a low weight for an adult is uncommon compared to the rest of the data, so this person is obviously an outlier.
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ### Exercise 4: Hospital Data Analysis
 **4a. Data Loading and Basic Analysis**<br>
 *Which gender is more common in PATIENTS.csv?*<br>
