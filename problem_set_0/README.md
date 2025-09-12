@@ -12,7 +12,7 @@
 (Code Appendix)
 
 **1b. Identify ambiguity in problem description**<br> 
-*Are there any aspects of 1a that could be interpreted in more than one way? Discuss.* 
+*Are there any aspects of 1a that could be interpreted in more than one way? Discuss.*<br> 
 The problem does not define the units of temperature (i.e. Degrees F vs Degrees C). I assumed both the reference temperature and the tested values are in the same unit. Furthermore, the problem does not specify the type of input. I assumed only numerical values would be given. Also, "within 1 degree" is a bit ambiguious since it could be intepreted as either strictly less than 1 or less than or equal to 1. Here I chose the inclusive threshold (<=1). 
 
 **1c. Testing**<br>
@@ -29,7 +29,7 @@ human_tester(98.6): False<br>
 **2b. Visualization of New Cases**<br> 
 Below is the example daily new cases plot (new cases versus date) for Washington, New York, and Illinois:
 
-<img src="plots/2b_new_cases.png" width="800"/>
+<img src="plots/2b_new_cases.png" width="750"/>
 
 *Discuss any limitations of your approach.*<br>
 The data comes from cumulative totals, so “daily new cases” are just the differences between days. This can create odd results if states revise their numbers (for example, negative values). Moreover, some states don’t report every day. They may report weekly or in batches, which can show up as long flat stretches at 0 and then large spikes. Lastly, the graph uses total counts, so bigger states naturally look larger than smaller ones. It doesn’t adjust for population size, so it's not good for comparisons between states. 
@@ -70,15 +70,13 @@ Below is the daily new cases plot (new cases versus date) for Florida:
 
 Two unusual patterns stand out:
 
-1. Negative new case value
-
-I hypothesize that this can appear when Florida revised its cumulative case count downward.
+1. Negative new case value: I hypothesize that this can appear when Florida revised its cumulative case count downward.
 
 2. Jump patterns after Nov 2022 (Long stretches of zeros followed by sudden large increases)
 
-The 25% percentile of daily new cases for Florida is 0, which supports this pattern.
+The 25% percentile of daily new cases for Florida is 0, which further supports this second pattern.
 
-The zoomed plot below makes this second pattern clearer:
+The zoomed plot below makes the second pattern clearer:
 
 <img src="plots/2e_fl_tail.png" width="700"/>
 
@@ -87,7 +85,7 @@ I hypothesize that Florida stopped reporting daily during this period and instea
 Count of gaps: 9<br>
 Mean gap (days): 14.78<br>
 Median gap (days): 14.0<br>
-Top gap values: 14days (8 times), 21 days (1 time)
+Top gap values: 14 days (8 times), 21 days (1 time)
 
 These results support the hypothesis: after November 2022, Florida reported new cases biweekly, with an occasional three-week gap.
 
@@ -130,7 +128,7 @@ Below is the histogram of the weight distribution with number of bins = 20:
 <img src="plots/3b_weight.png" width="600"/>
 
 *Describe the role of the number of bins.*<br>
-*I assumed the unit of weight is kg for the rest of the problem.*
+*(I assumed the unit of weight is kg for the rest of the problem.)*<br>
 The number of bins decides how the weight range is split into intervals. For example, if weights range from 0 to 100 (kg) and we use 20 bins, each bin covers 5 kg (0–5, 5–10, …).
 
 *Comment on any outliers or patterns you observe in the weight distribution.*<br>
@@ -213,14 +211,12 @@ Tables are more flexible. We can filter, join, and group by many fields (e.g., �
 Moreover, in a table, each patient–diagnosis pair is stored once per row, so the data stays consistent. In a patient-keyed dictionary, the same diagnosis may be repeated under many patients. In a diagnosis-keyed dictionary, the same patient ID may be repeated under many diagnoses. This duplication makes updates harder. 
 
 *Explain the strengths and weaknesses of these structures for different types of queries and analyses.*<br>
-(A) Dictionary by patient (subject_id)
-
+(A) Dictionary by patient (subject_id)<br>
 Structure: each patient ID points to their info (gender, birth/death date) and a list of diagnoses.<br>
 Strength: very easy to pull up everything about one patient.<br>
 Weakness: hard to answer “who has disease X?” because we need to check all patients.
 
-(B) Dictionary by diagnosis
-
+(B) Dictionary by diagnosis<br>
 Structure: each diagnosis code points to a list of patients who have it.<br>
 Strength: very easy to list all patients with a given disease or count how common it is.<br>
 Weakness: hard to get a full picture of one patient since their info may be spread across diagnoses.
