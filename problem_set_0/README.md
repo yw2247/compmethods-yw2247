@@ -12,7 +12,7 @@
 (Code Appendix)
 
 **1b. Identify ambiguity in problem description**<br> 
-*Are there any aspects of 1a that could be interpreted in more than one way? Discuss.*<br>      
+*Are there any aspects of 1a that could be interpreted in more than one way? Discuss.* 
 The problem does not define the units of temperature (i.e. Degrees F vs Degrees C). I assumed both the reference temperature and the tested values are in the same unit. Furthermore, the problem does not specify the type of input. I assumed only numerical values would be given. Also, "within 1 degree" is a bit ambiguious since it could be intepreted as either strictly less than 1 or less than or equal to 1. Here I chose the inclusive threshold (<=1). 
 
 **1c. Testing**<br>
@@ -29,7 +29,7 @@ human_tester(98.6): False<br>
 **2b. Visualization of New Cases**<br> 
 Below is the example daily new cases plot (new cases versus date) for Washington, New York, and Illinois:
 
-<img src="plots/2b_new_cases.png" width="700"/>
+<img src="plots/2b_new_cases.png" width="800"/>
 
 *Discuss any limitations of your approach.*<br>
 The data comes from cumulative totals, so “daily new cases” are just the differences between days. This can create odd results if states revise their numbers (for example, negative values). Moreover, some states don’t report every day. They may report weekly or in batches, which can show up as long flat stretches at 0 and then large spikes. Lastly, the graph uses total counts, so bigger states naturally look larger than smaller ones. It doesn’t adjust for population size, so it's not good for comparisons between states. 
@@ -139,7 +139,7 @@ The weight distribution peaks around 65-75 kg and has a long left tail. Most ind
 **3d. Explore Relationships**<br>
 *Create a scatterplot of weights versus ages.*
 
-<img src="plots/3e_scatter.png" width="600"/>
+<img src="plots/3e_scatter.png" width="550"/>
 
 *Describe the general relationship between weights and ages as observed from the scatterplot.*<br>
 Before about age 20, weight tends to increase with age, which shows a clear positive relationship because of growth and adolescence. After age 20, weights mostly stay between 50 and 100 kg, with differences between individuals but no clear trend of increasing or decreasing with age.
