@@ -60,7 +60,7 @@ Example Results:<br>
 | Washington vs. New York | New York          | 10                 |
 | Illinois vs. California | California        | 8                  |
 | Washington vs. Illinois | Same Peak Date    | 0                  |
-<br>
+
 New York’s peak occurred 10 days before Washington’s. California’s peak occurred 8 days before Illinois’s. Washington and Illinois peaked on the same day. These results show that most states reached their peaks around the same time, but there were small differences in timing between regions. The function is a straightforward way to compare peak dates. It gives a rough idea of how the outbreaks rose in different states.
 
 **2e. Examine individual states**<br> 
@@ -231,9 +231,7 @@ Therefore, as I mentioned before, we can use dictionaries for fast lookups when 
 *Describe in words (no need to implement) how code might transform the data from the tabular form it stated out as into one of these hierarchical formats.*<br>
 Below are the table info for better understanding and connection:
 - PATIENTS: one row per patient (subject_id, gender, dob, dod …).
-
 - DIAGNOSES_ICD: links patients to diagnosis codes (subject_id, icd9_code).
-
 - D_ICD_DIAGNOSES: explains each diagnosis code's meaning (icd9_code, long_title).
 
 To build (A) Dictionary by patient:
