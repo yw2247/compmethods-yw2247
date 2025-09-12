@@ -1,7 +1,6 @@
 # Problem Set 0
-**Name:** Yu (Irene) Wang
-
-**NetID:** yw2247        
+**Name:** Yu (Irene) Wang<br>
+**NetID:** yw2247        <br>
 ## Instructions to Run Code
 - Python 3.x required  
 - Install dependencies:  
@@ -30,7 +29,7 @@ human_tester(98.6): False<br>
 **2b. Visualization of New Cases**<br> 
 Below is the example daily new cases plot (new cases versus date) for Washington, New York, and Illinois:
 
-![Daily new cases plot](plots/2b_new_cases.png)
+<img src="plots/2b_new_cases.png" width="500"/>
 
 *Discuss any limitations of your approach.*<br>
 The data comes from cumulative totals, so “daily new cases” are just the differences between days. This can create odd results if states revise their numbers (for example, negative values). Moreover, some states don’t report every day. They may report weekly or in batches, which can show up as long flat stretches at 0 and then large spikes. Lastly, the graph uses total counts, so bigger states naturally look larger than smaller ones. It doesn’t adjust for population size, so it's not good for comparisons between states. 
