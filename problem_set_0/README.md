@@ -29,7 +29,7 @@ human_tester(98.6): False<br>
 **2b. Visualization of New Cases**<br> 
 Below is the example daily new cases plot (new cases versus date) for Washington, New York, and Illinois:
 
-<img src="plots/2b_new_cases.png" width="500"/>
+<img src="plots/2b_new_cases.png" width="700"/>
 
 *Discuss any limitations of your approach.*<br>
 The data comes from cumulative totals, so “daily new cases” are just the differences between days. This can create odd results if states revise their numbers (for example, negative values). Moreover, some states don’t report every day. They may report weekly or in batches, which can show up as long flat stretches at 0 and then large spikes. Lastly, the graph uses total counts, so bigger states naturally look larger than smaller ones. It doesn’t adjust for population size, so it's not good for comparisons between states. 
@@ -66,7 +66,7 @@ New York’s peak occurred 10 days before Washington’s. California’s peak oc
 *Review the data for Florida and identify any unusual patterns. Hypothesize about what might be happening.*<br>
 Below is the daily new cases plot (new cases versus date) for Florida:
 
-![Daily new cases plot for Florida](plots/2e_fl.png)
+<img src="plots/2e_fl.png" width="700"/>
 
 Two unusual patterns stand out:
 
@@ -80,7 +80,7 @@ The 25% percentile of daily new cases for Florida is 0, which supports this patt
 
 The zoomed plot below makes this second pattern clearer:
 
-![Daily new cases plot zoom for Florida](plots/2e_fl_tail.png)
+<img src="plots/2e_fl_tail.png" width="700"/>
 
 I hypothesize that Florida stopped reporting daily during this period and instead updated case counts less frequently (e.g., weekly/ biweekly/ monthly). To test this, I measured the gaps between non-zero reporting days:
 
@@ -109,7 +109,7 @@ max: 99.991547
 *Plot a histogram of the age distribution with an appropriate number of bins.*<br>
 Below is the histogram of the age distribution with number of bins = 20:
 
-![Histogram of the Age Distribution](plots/3b_age.png)
+<img src="plots/3b_age.png" width="600"/>
 
 *Describe the role of the number of bins.*<br>
 The number of bins decides how the age range is split into intervals. For example, with ages from 0 to 100 and 20 bins, each bin represents 5 years (0–5, 5–10, …). More bins give more details but can look messy, while fewer bins look simpler but may hide details.
@@ -127,7 +127,7 @@ max: 100.435793
 *Plot a histogram of the weight distribution with an appropriate number of bins.*<br>
 Below is the histogram of the weight distribution with number of bins = 20:
 
-![Histogram of the Weight Distribution](plots/3b_weight.png)
+<img src="plots/3b_weight.png" width="600"/>
 
 *Describe the role of the number of bins.*<br>
 *I assumed the unit of weight is kg for the rest of the problem.*
@@ -139,7 +139,7 @@ The weight distribution peaks around 65-75 kg and has a long left tail. Most ind
 **3d. Explore Relationships**<br>
 *Create a scatterplot of weights versus ages.*
 
-![Scatterplot of Weights versus Ages](plots/3e_scatter.png)
+<img src="plots/3e_scatter.png" width="600"/>
 
 *Describe the general relationship between weights and ages as observed from the scatterplot.*<br>
 Before about age 20, weight tends to increase with age, which shows a clear positive relationship because of growth and adolescence. After age 20, weights mostly stay between 50 and 100 kg, with differences between individuals but no clear trend of increasing or decreasing with age.
