@@ -12,7 +12,7 @@
 (Code Appendix)
 
 **1b. Identify ambiguity in problem description**<br> 
-> *Are there any aspects of 1a that could be interpreted in more than one way? Discuss.*<br> 
+*Are there any aspects of 1a that could be interpreted in more than one way? Discuss.*<br> 
 The problem does not define the units of temperature (i.e. Degrees F vs Degrees C). I assumed both the reference temperature and the tested values are in the same unit. Furthermore, the problem does not specify the type of input. I assumed only numerical values would be given. Also, "within 1 degree" is a bit ambiguious since it could be intepreted as either strictly less than 1 or less than or equal to 1. Here I chose the inclusive threshold (<=1). 
 
 **1c. Testing**<br>
@@ -24,21 +24,22 @@ human_tester(98.6): False<br>
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Exercise 2:  Analyzing COVID-19 Case Data
 **2a. Function Implementation**<br> 
-(Code Appendix) 
+(Code Appendix)<br>
+Data Source: COVID-19 data provided by The New York Times, available at https://github.com/nytimes/covid-19-data.
 
 **2b. Visualization of New Cases**<br> 
 Below is the example daily new cases plot (new cases versus date) for Washington, New York, and Illinois:
 
 <img src="plots/2b_new_cases.png" width="750"/>
 
-> *Discuss any limitations of your approach.*<br>
+*Discuss any limitations of your approach.*<br>
 The data comes from cumulative totals, so “daily new cases” are just the differences between days. This can create odd results if states revise their numbers (for example, negative values). Moreover, some states don’t report every day. They may report weekly or in batches, which can show up as long flat stretches at 0 and then large spikes. Lastly, the graph uses total counts, so bigger states naturally look larger than smaller ones. It doesn’t adjust for population size, so it's not good for comparisons between states. 
 
 **2c. Find Peak Case Dates**<br> 
-> *Implement a function that takes the name of a state and returns the date of its highest number of new cases.*<br>
+*Implement a function that takes the name of a state and returns the date of its highest number of new cases.*<br>
 (Code Appendix)
 
-> *Test this function and provide examples of its use.*<br>
+*Test this function and provide examples of its use.*<br>
 I tested find_peak_dates function on 4 states. Below are their peak dates and peak new case counts:
 
 Washington:  2022-01-18, 63640 new cases<br>
@@ -49,10 +50,10 @@ California:  2022-01-10, 227972 new cases<br>
 We can see that most states peaked during early January 2022. Among the 4 tested states, California’s peak was especially high due to its large population. This shows the function correctly identifies the highest daily new case count for each state.
 
 **2d. Compare Peak Cases**<br> 
-> *Create a function that compares the highest number of daily new cases between two states and reports which state had its peak first. The function should also return the number of days between the peaks.*<br>
+*Create a function that compares the highest number of daily new cases between two states and reports which state had its peak first. The function should also return the number of days between the peaks.*<br>
 (Code Appendix)
 
-> *Test this function and provide examples of its use.*<br>
+*Test this function and provide examples of its use.*<br>
 Example Results:<br>
 | States Compared         | First to Peak     | Days Between Peaks |
 | ----------------------- | ----------------- | ------------------ |
@@ -63,7 +64,7 @@ Example Results:<br>
 New York’s peak occurred 10 days before Washington’s. California’s peak occurred 8 days before Illinois’s. Washington and Illinois peaked on the same day. These results show that most states reached their peaks around the same time, but there were small differences in timing between regions. The function is a straightforward way to compare peak dates. It gives a rough idea of how the outbreaks rose in different states.
 
 **2e. Examine individual states**<br> 
-> *Review the data for Florida and identify any unusual patterns. Hypothesize about what might be happening.*<br>
+*Review the data for Florida and identify any unusual patterns. Hypothesize about what might be happening.*<br>
 Below is the daily new cases plot (new cases versus date) for Florida:
 
 <img src="plots/2e_fl.png" width="700"/>
@@ -91,69 +92,69 @@ These results support the hypothesis: after November 2022, Florida reported new 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Exercise 3:  Analyzing Population Data
 **3a. Load and Examine Data**<br> 
-> *What columns are present in the dataset?*<br>
+*What columns are present in the dataset?*<br>
 There are 4 columns present in the dataset: "name", "age", "weight", and "eyecolor".
 
-> *How many rows (representing individuals) does the dataset contain?*<br>
+*How many rows (representing individuals) does the dataset contain?*<br>
 The dataset contains 152361 rows. 
 
 **3b. Analyze Age Distribution**<br>
-> *Compute and report the following statistics for the age column: mean, standard deviation, minimum, maximum.*<br>
+*Compute and report the following statistics for the age column: mean, standard deviation, minimum, maximum.*<br>
 mean: 39.510528<br>
 std: 24.152760<br>
 min: 0.000748<br>
 max: 99.991547
 
-> *Plot a histogram of the age distribution with an appropriate number of bins.*<br>
+*Plot a histogram of the age distribution with an appropriate number of bins.*<br>
 Below is the histogram of the age distribution with number of bins = 20:
 
 <img src="plots/3b_age.png" width="600"/>
 
-> *Describe the role of the number of bins.*<br>
+*Describe the role of the number of bins.*<br>
 The number of bins decides how the age range is split into intervals. For example, with ages from 0 to 100 and 20 bins, each bin represents 5 years (0–5, 5–10, …). More bins give more details but can look messy, while fewer bins look simpler but may hide details.
 
-> *Comment on any outliers or patterns you observe in the age distribution.*<br>
+*Comment on any outliers or patterns you observe in the age distribution.*<br>
 The age distribution looks fairly even up to around 70, with fewer individuals above 70. There are no impossible ages (e.g., below 0 or above 110), and no clear outliers.
 
 **3c. Analyze Weight Distribution**<br>
-> *Compute and report the following statistics for the weight column: mean, standard deviation, minimum, maximum.*<br>
+*Compute and report the following statistics for the weight column: mean, standard deviation, minimum, maximum.*<br>
 mean: 60.884134<br>
 std: 18.411824<br>
 min: 3.382084<br>
 max: 100.435793
 
-> *Plot a histogram of the weight distribution with an appropriate number of bins.*<br>
+*Plot a histogram of the weight distribution with an appropriate number of bins.*<br>
 Below is the histogram of the weight distribution with number of bins = 20:
 
 <img src="plots/3b_weight.png" width="600"/>
 
-> *Describe the role of the number of bins.*<br>
-> *(I assumed the unit of weight is kg for the rest of the problem.)*<br>
+*Describe the role of the number of bins.*<br>
+*(I assumed the unit of weight is kg for the rest of the problem.)*<br>
 The number of bins decides how the weight range is split into intervals. For example, if weights range from 0 to 100 (kg) and we use 20 bins, each bin covers 5 kg (0–5, 5–10, …).
 
-> *Comment on any outliers or patterns you observe in the weight distribution.*<br>
+*Comment on any outliers or patterns you observe in the weight distribution.*<br>
 The weight distribution peaks around 65-75 kg and has a long left tail. Most individuals fall within the adult range. A few very low values (below 20 kg, minimum ~3.4 kg) are clear outliers, likely children or infants. Some high values near 100 kg are also rare but less extreme.
 
 **3d. Explore Relationships**<br>
-> *Create a scatterplot of weights versus ages.*
+*Create a scatterplot of weights versus ages.*
 
 <img src="plots/3e_scatter.png" width="550"/>
 
-> *Describe the general relationship between weights and ages as observed from the scatterplot.*<br>
+*Describe the general relationship between weights and ages as observed from the scatterplot.*<br>
 Before about age 20, weight tends to increase with age, which shows a clear positive relationship because of growth and adolescence. After age 20, weights mostly stay between 50 and 100 kg, with differences between individuals but no clear trend of increasing or decreasing with age.
 
-> *Identify and name any individual whose data does not follow the general relationship observed.*<br>
+*Identify and name any individual whose data does not follow the general relationship observed.*<br>
 Anthony Freeman. 
 
-> *Explain your process for identifying this outlier.*<br>
+*Explain your process for identifying this outlier.*<br>
 From the scatterplot, I noticed one point that did not follow the general relationship between age and weight: an individual older than 40 with a weight below 30 kg. To confirm, I filtered the dataset with the condition age > 40 and weight < 30, which returned this individual. Such a low weight for an adult is uncommon compared to the rest of the data, so this person is obviously an outlier.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Exercise 4: Hospital Data Analysis
 **4a. Data Loading and Basic Analysis**<br>
-> *Which gender is more common in PATIENTS.csv?*<br>
+*Which gender is more common in PATIENTS.csv?*<br>
 Female.
 
-> *How many entries are there for 'M' (Male) and 'F' (Female)?*<br>
+*How many entries are there for 'M' (Male) and 'F' (Female)?*<br>
 There are 45 entries for 'M' (Male) and 55 entries for 'F' (Female).
 
 **4b. Function Implementation**<br>
@@ -183,7 +184,7 @@ Together, these tests cover:
 They demonstrate that the function correctly maps a diagnosis title to ICD-9 codes and then to subject IDs. The function can also handle edge cases properly. 
 
 **4d. Age Calculation**<br>
-> *Calculate the age in days at the time of death (dod-dob) for patients diagnosed with "Intestinal infection due to Clostridium difficile". Report your findings.*<br>
+*Calculate the age in days at the time of death (dod-dob) for patients diagnosed with "Intestinal infection due to Clostridium difficile". Report your findings.*<br>
 There are 7 patients diagonsed with the syndrome. After dropping one row with unrealistic values (dob:1880-02-29, dod:2180-03-20; overflow due to de-identified shifted dates), I obtained results for 6 patients:<br>
 
 The ages ranged from 21358 days (~58 years) to 29891 days (~82 years).<br>
@@ -206,11 +207,11 @@ Below is the full information:
 *(A) A dictionary keyed by subject_id, with nested dictionaries containing patient info and diagnoses;*<br>
 *(B) A dictionary keyed by diagnosis, with lists of patients.*<br>
 
-> *Compare these alternative structures with table-based data.*<br>
+*Compare these alternative structures with table-based data.*<br>
 Tables are more flexible. We can filter, join, and group by many fields (e.g., “Find all patients with diagnosis X who were born after year Y, and group them by gender”). These dictionaries are faster for simple lookups (like one patient or one diagnosis) but are less flexible.<br>
 Moreover, in a table, each patient–diagnosis pair is stored once per row, so the data stays consistent. In a patient-keyed dictionary, the same diagnosis may be repeated under many patients. In a diagnosis-keyed dictionary, the same patient ID may be repeated under many diagnoses. This duplication makes updates harder. 
 
-> *Explain the strengths and weaknesses of these structures for different types of queries and analyses.*<br>
+*Explain the strengths and weaknesses of these structures for different types of queries and analyses.*<br>
 (A) Dictionary by patient (subject_id)<br>
 Structure: each patient ID points to their info (gender, birth/death date) and a list of diagnoses.<br>
 Strength: very easy to pull up everything about one patient.<br>
@@ -223,7 +224,7 @@ Weakness: hard to get a full picture of one patient since their info may be spre
 
 Therefore, as I mentioned before, we can use dictionaries for fast lookups when we only care about one direction (one patient or one diagnosis). On the other hand, we can use tables for deep analysis and complex queries. 
 
-> *Describe in words (no need to implement) how code might transform the data from the tabular form it stated out as into one of these hierarchical formats.*<br>
+*Describe in words (no need to implement) how code might transform the data from the tabular form it stated out as into one of these hierarchical formats.*<br>
 Below are the table info for better understanding and connection:
 - PATIENTS: one row per patient (subject_id, gender, dob, dod …).
 - DIAGNOSES_ICD: links patients to diagnosis codes (subject_id, icd9_code).
@@ -240,4 +241,217 @@ To build (B) Dictionary by diagnosis:
 2. Add the diagnosis description from D_ICD_DIAGNOSES.
 3. Store each diagnosis as a key, with the value being a list of patient IDs.
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Appendix: Full Code
+```python
+# -----------------------
+# Exercise 1
+# -----------------------
+#1a
+def temp_tester (normal_temp):
+    """
+    Returns a function that takes a single temperature argument and returns 
+    True if this temperature is within 1 degree of normal_temp, and False otherwise.
+    """
+    def test (temp):
+        return abs(temp -  normal_temp) <= 1.0
+    return test
+
+#1c
+human_tester = temp_tester(37)
+chicken_tester = temp_tester(41.1)
+
+print("chicken_tester(42):", chicken_tester(42))   # True -- i.e. not a fever for a chicken
+print("human_tester(42):", human_tester(42))       # False -- this would be a severe fever for a human
+print("chicken_tester(43):", chicken_tester(43))   # False
+print("human_tester(35):", human_tester(35))       # False -- too low
+print("human_tester(98.6):", human_tester(98.6))   # False -- normal in degrees F but our refere
+
+# -----------------------
+# Exercise 2
+# -----------------------
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#2a
+data = pd.read_csv("data/us-states.csv") # Be sure to credit The New York Times as data source in readme.
+data["date"] = pd.to_datetime(data["date"])
+print(data.head())
+data.info()
+
+data["new_cases"] = data.groupby("state")["cases"].diff()
+print(data[data["state"] == "Washington"].head())
+
+#2b
+def plot_new_cases(data, states):
+    fig = plt.figure(figsize=(8,4))
+    for state in states:
+        subset = data[data["state"] == state]
+        plt.plot(subset["date"], subset["new_cases"], label=state)
+    plt.xlabel("Date")
+    plt.ylabel("Number of New Cases")
+    plt.title("Daily COVID-19 New Cases by State")
+    plt.legend()
+    return fig
+
+fig = plot_new_cases(data, ["Washington", "New York", "Illinois"])
+fig.savefig("plots/2b_new_cases.png", dpi=200, bbox_inches="tight")
+
+#2c
+def find_peak_dates(data, state):
+    subset = data[data["state"] == state]
+    idx = subset["new_cases"].idxmax()
+    peak_date = subset.loc[idx, "date"]
+    peak_amount = int(subset.loc[idx, "new_cases"])
+    return peak_date, peak_amount
+
+# Test for find_peak_dates
+print(find_peak_dates(data, "Washington"))
+print(find_peak_dates(data, "New York"))
+print(find_peak_dates(data, "Illinois"))
+print(find_peak_dates(data, "California"))
+
+#2d
+def compare_peak_cases(data, state1, state2):
+    date1 = find_peak_dates(data, state1)[0]
+    date2 = find_peak_dates(data, state2)[0]
+    if date1 > date2:
+        return state2, (date1 - date2).days
+    elif date1 < date2:
+        return state1, (date2 - date1).days
+    else:
+        return "Same Peak Date", 0
+
+# Test for compare_peak_cases
+print(compare_peak_cases(data, "Washington", "New York"))
+print(compare_peak_cases(data, "Illinois", "California"))
+print(compare_peak_cases(data, "Washington", "Illinois"))
+
+#2e
+fl = data[data["state"] == "Florida"]
+fl_fig = plot_new_cases(data, ["Florida"])
+fl_fig.savefig("plots/2e_fl.png", dpi=200, bbox_inches="tight")
+fl.describe()
+
+fl_tail = fl[fl["date"] >= "2022-11-01"]
+fl_tail_fig = plot_new_cases(fl_tail,["Florida"])
+fl_tail_fig.savefig("plots/2e_fl_tail.png", dpi=200, bbox_inches="tight")
+
+nz = fl_tail.loc[fl_tail["new_cases"] != 0, "date"].reset_index(drop=True) # Keep only days with a non-zero report
+gaps = nz.diff().dropna().dt.days # Day gaps between consecutive reporting days
+
+print("Count of gaps:", gaps.size)
+print("Mean gap (days):", gaps.mean().round(2))
+print("Median gap (days):", gaps.median())
+print("Top gap values:")
+print(gaps.value_counts().sort_index().head(10))
+
+# -----------------------
+# Exercise 3
+# -----------------------
+import pandas as pd
+import sqlite3
+import matplotlib.pyplot as plt
+
+with sqlite3.connect("data/pset0-population.db") as db:
+    data = pd.read_sql_query("SELECT * FROM population", db)
+
+#3a
+data.info()
+
+#3b
+data["age"].describe()
+
+age_fig = plt.figure(figsize=(8,4))
+plt.hist(data["age"], bins=20)
+plt.xlabel("Age")
+plt.ylabel("Count")
+plt.title("Histogram of the Age Distribution")
+age_fig.savefig("plots/3b_age.png", dpi=200, bbox_inches="tight")
+
+#3c
+data["weight"].describe()
+
+weight_fig = plt.figure(figsize=(8,4))
+plt.hist(data["weight"], bins=20)
+plt.xlabel("Weight")
+plt.ylabel("Count")
+plt.title("Histogram of the Weight Distribution")
+weight_fig.savefig("plots/3b_weight.png", dpi=200, bbox_inches="tight")
+
+#3d
+scatter_fig = plt.figure(figsize=(6,4))
+plt.scatter(data["age"], data["weight"], s=1)
+plt.xlabel("Age")
+plt.ylabel("Weight")
+plt.title("Weights v.s. Age")
+scatter_fig.savefig("plots/3e_scatter.png", dpi=200, bbox_inches="tight")
+
+outlier1 = data[(data["age"] > 40) & (data["weight"] < 30)]
+print(outlier1)
+
+# -----------------------
+# Exercise 4
+# -----------------------
+import pandas as pd
+patients = pd.read_csv("data/PATIENTS.csv")
+dicd = pd.read_csv("data/D_ICD_DIAGNOSES.csv")
+diagnoses = pd.read_csv("data/DIAGNOSES_ICD.csv")
+patients["gender"].unique()
+
+#4a
+gender_counts = patients["gender"].value_counts()
+gender_counts
+
+#4b
+def get_subject_ids(diagnosis: str) -> list:
+    icd9 = dicd.loc[dicd["long_title"] == diagnosis, "icd9_code"].unique()
+    subject_ids = diagnoses.loc[diagnoses["icd9_code"].isin(icd9), "subject_id"].unique()
+    return  [int(x) for x in subject_ids]
+
+#4c
+# 1) Known diagnosis: should return a non-empty list
+name1 = "Intestinal infection due to Clostridium difficile"
+result1 = get_subject_ids(name1)
+print("Result for valid diagnosis_1:", result1)
+assert isinstance(result1, list)
+
+name2 = "Down's syndrome" # manual check: should return only one id 42066
+result2 = get_subject_ids(name2)
+print("Result for valid diagnosis_2:", result2)
+assert isinstance(result2, list)
+
+# 2) Known diagnosis: should return empty since no subject got the syndrome  
+name3 = "Tuberculosis of ureter, unspecified"
+result3 = get_subject_ids(name3)
+print("Result for valid diagnosis_3:", result3)
+assert result3 == []
+
+# 3) A D.N.E diagnosis: should return empty
+name4 = "nothing"
+result4 = get_subject_ids(name4)
+print("Result for D.N.E diagnosis:", result4)
+assert result4 == []
+
+# 4) Test no duplicates occur 
+assert len(result1) == len(set(result1))
+
+# 5) Test all int ids
+assert all(isinstance(x, int) for x in result1)
+
+# 6) Test every returned subject_id should exist in PATIENTS.
+patient_ids = set(patients["subject_id"].astype(int))
+assert set(result1).issubset(patient_ids), "Got IDs not present in PATIENTS"
+assert set(result2).issubset(patient_ids), "Got IDs not present in PATIENTS"
+
+#4d
+cd_ids = get_subject_ids("Intestinal infection due to Clostridium difficile")
+cd_patients = patients[patients["subject_id"].isin(cd_ids)].copy()
+cd_patients["dob"] = pd.to_datetime(cd_patients["dob"])
+cd_patients["dod"] = pd.to_datetime(cd_patients["dod"])
+cd_patients
+
+cd_patients_remove = cd_patients.drop(33) # row with index 33 caused an overflow error, so we drop it
+cd_patients_remove["age_in_days_at_time_of_death"] = (cd_patients_remove["dod"] - cd_patients_remove["dob"]).dt.days
+summary_age_days = cd_patients_remove["age_in_days_at_time_of_death"].describe()
+print(summary_age_days)
+cd_patients_remove
