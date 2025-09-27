@@ -266,10 +266,10 @@ alg2: ≈ O(n log n) (splits/merges regardless of order).<br>
 alg2 strongly dominates.<br>
 
 *Recommend which algorithm would be preferable for different types of data and justify your recommendation based on your findings.*<br>
-Most cases/ large lists/ unknown order: use alg2 (merge sort). It stays fast and reliable (about O(nlogn)) no matter how the data looks.<br>
-Already or nearly sorted, and the list isn’t big: alg1 (bubble sort with early exit) is fine and can be faster because it may finish after one pass (about o(n)).<br>
-Reverse-sorted or bad order: avoid alg1 (it can be O(n^2) and very slow). Use alg2 instead.<br>
-If we want safe performance without guessing about the data: Use alg2. It stays consistent and reliable all the time.<br>
+- Most cases/ large lists/ unknown order: use alg2 (merge sort). It stays fast and reliable (about O(nlogn)) no matter how the data looks.<br>
+- lready or nearly sorted, and the list isn’t big: alg1 (bubble sort with early exit) is fine and can be faster because it may finish after one pass (about o(n)).<br>
+- Reverse-sorted or bad order: avoid alg1 (it can be O(n^2) and very slow). Use alg2 instead.<br>
+- If we want safe performance without guessing about the data: Use alg2. It stays consistent and reliable all the time.<br>
 Thereofore, pick merge sort by default, especially for big or messy data; use bubble sort with early exit only for small lists that are already or almost sorted.<br>
 
 ### Exercise 4: Implementing and Analyzing a Binary Search Tree as a tool for organizing data
@@ -441,3 +441,729 @@ If two options overlap a lot on the same concept set (>~40%), keep the one with 
 
 - Rule 5: Must be practical to maintain.<br>
 Each ontology must have stable releases and easy access (UMLS/EVS/OBO/RSNA downloads and APIs).<br>
+
+## Appendix: Full Code
+```python
+# -----------------------
+# Exercise 1
+# -----------------------
+# import element tree under the alias of ET
+import xml.etree.ElementTree as ET
+import matplotlib.pyplot as plt
+from collections import Counter
+from bisect import bisect_left
+
+# 1a. Plot Age Distribution
+# Load the patient data 
+# pass the path of the xml document to enable the parsing process
+tree = ET.parse('data/pset1-patients.xml')
+
+# get the parent tag of the xml document
+root = tree.getroot()
+
+patients = []
+for patient in root.find("patients").findall("patient"):
+    name = patient.attrib.get("name", "Unknown")
+    gender = patient.attrib.get("gender", "Unknown")
+    try:
+        age = float(patient.attrib["age"])
+    # if "age" doesn’t exist or can’t be converted, set to None
+    except (KeyError, ValueError):
+        age = None
+
+    patients.append({
+        "name": name,
+        "age": age,
+        "gender": gender
+    })
+
+print("Total patients:", len(patients)) 
+print("First 5 records:", patients[:5])
+
+# Plot a histogram showing the distribution of ages
+ages = []
+for p in patients:
+    if p["age"] is not None:
+        ages.append(p["age"])
+len(ages) #324357 ages
+hist_age_fig = plt.figure(figsize=(8,4))
+plt.hist(ages, bins=20, edgecolor='black')
+plt.title("Age Distribution of the Patients")
+plt.xlabel("Age")
+plt.ylabel("Number of Patients")
+hist_age_fig.savefig("plots/1a_age.png", dpi=200, bbox_inches="tight")
+
+# Determine if any patients share the same exact age.
+# count how many times each age appears
+age_counts = Counter(ages)
+
+# keep only duplicates (count > 1)
+dup_counts = {}
+for age, count in age_counts.items():
+    if count > 1:
+        dup_counts[age] = count
+
+print("Duplicates:", dup_counts)  # {} means none
+print("Total with age:", len(ages), "; Unique ages:", len(age_counts))
+
+# 1b. Plot Gender Distribution
+genders = []
+for p in patients:
+    genders.append(p["gender"])
+
+gender_counts = Counter(genders)
+print(gender_counts) #{'female': 165293, 'male': 158992, 'unknown': 72}
+
+labels = ["female", "male", "unknown"]
+values = []
+for k in labels:
+    values.append(gender_counts[k])
+
+bar_gender_fig = plt.figure(figsize=(6,4))  
+plt.bar(labels, values)
+plt.title("Gender Distribution of the Patients")
+plt.xlabel("Gender")
+plt.ylabel("Count")
+bar_gender_fig.savefig("plots/1b_gender.png", dpi=200, bbox_inches="tight")
+
+# Identify how gender is encoded in the data and list the categories used
+print("Encoding: `gender` attribute on <patient>.")
+print("Categories:", sorted(gender_counts.keys()))
+print("Counts:", dict(gender_counts))
+
+# 1c. Sort Patients by Age
+# descending by age
+patients_sorted = sorted(patients, key=lambda p: p["age"], reverse=True)
+oldest = patients_sorted[0] 
+oldest
+
+# 1d. Finding the Second Oldest Patient
+def second_oldest(patients):
+    top = None
+    second = None
+    for p in patients:
+        a = p["age"]
+        if top is None or a > top:
+            if top is not None:
+                second = top
+            top = a
+        elif second is None or a > second:
+            second = a
+    if second is None:
+        return None, []
+    
+    # Returns a list of all matching patients (though each age is unique in this dataset)
+    second_oldest_p = [p for p in patients if p["age"] == second]
+    return second, second_oldest_p
+second_oldest(patients)
+
+# 2e. Binary Search for Specific Age
+patients_sorted_ascend = sorted(patients, key=lambda p: p["age"])
+ages_sorted_ascend = [p["age"] for p in patients_sorted_ascend] 
+target = 41.5
+
+# bisect_left gives the first position where 41.5 fits in the sorted list.
+i = bisect_left(ages_sorted_ascend, target) 
+
+# If 41.5 is present, that index is its first occurrence; 
+if i < len(ages_sorted_ascend) and ages_sorted_ascend[i] == target:
+    match = patients_sorted_ascend[i]
+    print("Match:", match)
+# otherwise it’s the insert spot (i.e., no match is found).
+else: 
+    first_match = None
+    print("No exact 41.5 found.")
+
+# 1f. Count Patients Above a Certain Age
+# i = bisect_left(ages_sorted_ascend, target) gives the first index with age >= 41.5
+count = len(ages_sorted_ascend) - i  # all patients from index i to end
+count 
+
+# 1g. Function for Age Range Query
+def count_in_age_range(ages_sorted_ascend, low_age, high_age):
+    if high_age <= low_age:
+        return 0  
+    low_index = bisect_left(ages_sorted_ascend, low_age)    # first index with age >= low_age
+    high_index = bisect_left(ages_sorted_ascend, high_age)  # first index with age >= high_age
+    return max(0, high_index - low_index)
+
+# Test for 1g
+def run_tests_1g():
+    a = ages_sorted_ascend  
+    n = len(a)
+
+    tests = [
+        # normal ranges that span all ages; should add up to n (324357)
+        ("[0, 21)", 0, 21),
+        ("[21, 35)", 21, 35),
+        ("[35, 50)", 35, 50),
+        ("[50, 70)", 50, 70),
+        ("[70, 90)", 70, 90),
+        ("[90, 100)", 90, 100), #should be 0 in our dataset 
+
+        # small ranges
+        ("[41.5, 41.9)", 41.5, 41.9),
+        ("[60, 61)", 60, 61),
+        
+        # boundary cases
+        ("empty when low==high", 41.5, 41.5), #should be 0
+        ("spans all ages", -1e9, 1e9), #should be n
+
+        # degenerate cases
+        ("below min", -100, 0), #should be 0
+        ("above max", 200, 300), #should be 0
+    
+        # check using 41.5
+        ("just below 41.5", 41.4999999, 41.5), #should be 0
+        ("just above 41.5", 41.5, 41.5000001), #should be 1
+    ]
+
+    for label, low, high in tests:
+        number = count_in_age_range(a, low, high)
+        print(f"{label}: {number}")
+
+    # Expanding the interval shouldn't decrease the count
+    assert count_in_age_range(a, 40, 50) <= count_in_age_range(a, 18, 50)
+    assert count_in_age_range(a, 10, 40) >= count_in_age_range(a, 10, 25)
+
+    # another test for non-overlapping pieces add up to n (324357)
+    left  = count_in_age_range(a, -1e9, 41.5)
+    middle = count_in_age_range(a, 41.5, 41.5)   #should be 0
+    right = count_in_age_range(a, 41.5, 1e9)
+    assert left + middle + right == n
+
+run_tests_1g()
+
+# 1h. Function for Age and Gender Range Query
+# Build a sorted age list for males
+male_ages_sorted_ascend = sorted(p["age"] for p in patients if p.get("gender") == "male")
+print(len(male_ages_sorted_ascend))
+
+def count_in_age_range_with_males(ages_sorted_ascend, male_ages_sorted_ascend, low_age, high_age):
+    if high_age <= low_age:
+        return 0, 0
+
+    low_index = bisect_left(ages_sorted_ascend, low_age)
+    high_index = bisect_left(ages_sorted_ascend, high_age)
+    total_count = max(0, high_index - low_index)
+
+    mlow_index = bisect_left(male_ages_sorted_ascend, low_age)
+    mhigh_index = bisect_left(male_ages_sorted_ascend, high_age)
+    male_count = max(0, mhigh_index - mlow_index)
+
+    return total_count, male_count
+
+    # Test for 1h
+def run_tests_1h():
+    a = ages_sorted_ascend
+    m = male_ages_sorted_ascend
+    n = len(a)
+    n_male = len(m)
+
+    tests = [
+        # normal ranges that span all ages; totals should add up to count_in_age_range(a, 0, 100)
+        ("[0, 21)", 0, 21),
+        ("[21, 35)", 21, 35),
+        ("[35, 50)", 35, 50),
+        ("[50, 70)", 50, 70),
+        ("[70, 90)", 70, 90),
+        ("[90, 100)", 90, 100),  # should be 0 in our datasets
+
+        # small ranges
+        ("[41.5, 41.9)", 41.5, 41.9),
+        ("[60, 61)", 60, 61),
+
+        # boundary cases
+        ("empty when low==high", 41.5, 41.5),  # should be 0
+        ("spans all ages", -1e9, 1e9),         # should be n, n_male
+
+        # degenerate cases
+        ("below min", -100, 0),                # should be 0
+        ("above max", 200, 300),               # should be 0
+
+        # checks using 41.5
+        ("just below 41.5", 41.4999999, 41.5),     # should be 0
+        ("just above 41.5", 41.5, 41.5000001),     # should be 1
+    ]
+
+    total_bins_sum = 0
+    male_bins_sum  = 0
+
+    for label, low, high in tests:
+        total_count, male_count = count_in_age_range_with_males(a, m, low, high)
+        print(f"{label}: total={total_count}  males={male_count}")
+
+        assert 0 <= male_count <= total_count
+
+        if label in {"[0, 21)", "[21, 35)", "[35, 50)", "[50, 70)", "[70, 90)", "[90, 100)"}:
+            total_bins_sum += total_count
+            male_bins_sum  += male_count
+
+    # Partition sums equal the full 0–100 query
+    full_total_0_100, full_male_0_100 = count_in_age_range_with_males(a, m, 0, 100)
+    assert total_bins_sum == full_total_0_100
+    assert male_bins_sum  == full_male_0_100
+
+    # Expanding the interval shouldn't decrease counts (totals and males)
+    t1, m1 = count_in_age_range_with_males(a, m, 40, 50)
+    t2, m2 = count_in_age_range_with_males(a, m, 18, 50)
+    assert t1 <= t2 and m1 <= m2
+    t3, m3 = count_in_age_range_with_males(a, m, 10, 40)
+    t4, m4 = count_in_age_range_with_males(a, m, 10, 25)
+    assert t3 >= t4 and m3 >= m4
+
+    # Non-overlapping pieces add up to the whole (around 41.5)
+    left_t, left_m   = count_in_age_range_with_males(a, m, -1e9, 41.5)
+    middle_t,  middle_m    = count_in_age_range_with_males(a, m,  41.5, 41.5)  # should be 0
+    right_t, right_m = count_in_age_range_with_males(a, m,  41.5, 1e9)
+    assert (left_t + middle_t + right_t) == count_in_age_range_with_males(a, m, -1e9, 1e9)[0]
+    assert (left_m + middle_m + right_m) == count_in_age_range_with_males(a, m, -1e9, 1e9)[1]
+
+run_tests_1h()
+
+# -----------------------
+# Exercise 2
+# -----------------------
+def administer_meds(delta_t, tstop):
+    t = 0
+    while t < tstop: 
+        print(f"Administering meds at t={t}")
+        t += delta_t
+
+# 2b. A first test case
+administer_meds(0.25, 1)
+
+# 2c. A second test case
+administer_meds(0.1, 1)
+
+# 2f. A safer implementation
+from decimal import Decimal
+
+def safer_administer_meds(delta_t, tstop):
+    dt = Decimal(str(delta_t))
+    T  = Decimal(str(tstop))
+    k = 0
+    while (dt * k) < T:                
+        t = dt * k                     
+        print(f"Administering meds at t={t}")
+        k += 1
+
+safer_administer_meds(0.1, 1)
+safer_administer_meds(0.3, 1)
+
+# -----------------------
+# Exercise 3
+# -----------------------
+# algorithm 1
+def alg1(data):
+  data = list(data)
+  changes = True
+  while changes:
+    changes = False
+    for i in range(len(data) - 1):
+      if data[i + 1] < data[i]:
+        data[i], data[i + 1] = data[i + 1], data[i]
+        changes = True
+  return data
+
+# algorithm 2
+def alg2(data):
+  if len(data) <= 1:
+    return data
+  else:
+    split = len(data) // 2
+    left = iter(alg2(data[:split]))
+    right = iter(alg2(data[split:]))
+    result = []
+    # note: this takes the top items off the left and right piles
+    left_top = next(left)
+    right_top = next(right)
+    while True:
+      if left_top < right_top:
+        result.append(left_top)
+        try:
+          left_top = next(left)
+        except StopIteration:
+          # nothing remains on the left; add the right + return
+          return result + [right_top] + list(right)
+      else:
+        result.append(right_top)
+        try:
+          right_top = next(right)
+        except StopIteration:
+          # nothing remains on the right; add the left + return
+          return result + [left_top] + list(left)
+
+def data1(n, sigma=10, rho=28, beta=8/3, dt=0.01, x=1, y=1, z=1):
+    import numpy
+    state = numpy.array([x, y, z], dtype=float)
+    result = []
+    for _ in range(n):
+        x, y, z = state
+        state += dt * numpy.array([
+            sigma * (y - x),
+            x * (rho - z) - y,
+            x * y - beta * z
+        ])
+        result.append(float(state[0] + 30))
+    return result
+
+df1 = data1(5)
+df1
+
+# sorted ascending dataset
+def data2(n):
+    return list(range(n))
+
+df2 = data2(10)
+df2
+
+# sorted descending dataset
+def data3(n):
+    return list(range(n, 0, -1))
+
+df3 = data3(10)
+df3
+
+# 3a. Hypothesize the Operation
+# Test alg1 on df1,2,3 generated by data1,2,3
+print(alg1(df1))
+print(alg1(df2))
+print(alg1(df3))
+
+# Test alg2 on df1,2,3 generated by data1,2,3
+print(alg2(df1))
+print(alg2(df2))
+print(alg2(df3))
+
+# test on manual random dataset
+df4 = [10, 3, 3, 4.1, 0, 7.99, 100, 2, 0, 1, -1, -0.01]
+print(alg1(df4))
+print(alg2(df4))
+
+# test on empty dataset
+df5 = []
+print(alg1(df5))
+print(alg2(df5))
+
+# 3c Performance Measurement and Analysis
+import time
+import numpy as np
+import matplotlib.pyplot as plt
+
+def time_algorithm(algorithm, original_data):
+    times = []
+    for attempt in [1, 2, 3]:
+        data = list(original_data)
+        start = time.perf_counter()
+        algorithm(data)
+        times.append(time.perf_counter() - start)
+    return min(times)
+
+# choose log-spaced sizes
+# Generates 10 numbers evenly spaced on a log10 scale from 10^1 to 10^3.8
+sizes = sorted({int(v) for v in np.logspace(1, 3.8, num=10)})
+sizes  
+
+# Time the performance of alg1 on data1
+times_a1_d1 = [time_algorithm(alg1, data1(size)) for size in sizes]
+times_a1_d1
+
+# Time the performance of alg2 on data1
+times_a2_d1 = [time_algorithm(alg2, data1(size)) for size in sizes]
+times_a2_d1
+
+# log-log graph for alg1 on data1
+plt.figure()
+plt.loglog(sizes, times_a1_d1, marker='o')
+plt.xlabel("size n (log scale)")
+plt.ylabel("runtime (s, log scale)")
+plt.title("alg1 (Bubble sort) timing on data1")
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/3c_a1_d1.png", dpi=200)
+
+# log-log graph for alg2 on data1
+plt.figure()
+plt.loglog(sizes, times_a2_d1, marker='o')
+plt.xlabel("size n (log scale)")
+plt.ylabel("runtime (s, log scale)")
+plt.title("alg2 (Merge Sort) timing on data1")
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/3c_a2_d1.png", dpi=200)
+
+import os
+os.makedirs("plots", exist_ok=True)
+
+# Comparison of merge and bubble sorts on data1
+plt.figure()
+plt.loglog(sizes, times_a1_d1, marker='o', label='alg1 (bubble)')
+plt.loglog(sizes, times_a2_d1, marker='o', label='alg2 (merge)')
+plt.xlabel("size n (log scale)")
+plt.ylabel("runtime (s, log scale)")
+plt.title("Performance on data1")
+plt.legend()
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/3c_compare_d1.png", dpi=200)
+
+# times for data2
+times_a1_d2 = [time_algorithm(alg1, data2(size)) for size in sizes]
+times_a2_d2 = [time_algorithm(alg2, data2(size)) for size in sizes]
+
+# Comparison of merge and bubble sorts on data2
+plt.figure()
+plt.loglog(sizes, times_a1_d2, marker='o', label='alg1 (bubble)')
+plt.loglog(sizes, times_a2_d2, marker='o', label='alg2 (merge)')
+plt.xlabel("size n (log scale)")
+plt.ylabel("runtime (s, log scale)")
+plt.title("Performance on data2 (already sorted ascending)")
+plt.legend()
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/3c_compare_d2.png", dpi=200)
+
+# times for data3
+times_a1_d3 = [time_algorithm(alg1, data3(size)) for size in sizes]
+times_a2_d3 = [time_algorithm(alg2, data3(size)) for size in sizes]
+
+# Comparison of merge and bubble sorts on data3
+plt.figure()
+plt.loglog(sizes, times_a1_d3, marker='o', label='alg1 (bubble)')
+plt.loglog(sizes, times_a2_d3, marker='o', label='alg2 (merge)')
+plt.xlabel("size n (log scale)")
+plt.ylabel("runtime (s, log scale)")
+plt.title("Performance on data3 (sorted descending)")
+plt.legend()
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/3c_compare_d3.png", dpi=200)
+
+# -----------------------
+# Exercise 4
+# -----------------------
+class Tree:
+    def __init__(self):
+        self._value = None
+        self._data = None
+        self.left = None
+        self.right = None
+
+    def add(self, value, data):
+        if self._value is None:
+            self._value = value
+            self._data = data
+            return
+        
+        if value < self._value:
+            if self.left is None:
+                self.left = Tree()
+            self.left.add(value, data)
+        elif value > self._value:
+            if self.right is None:
+                self.right = Tree()
+            self.right.add(value, data)
+        else:
+            self._data = data
+        
+    def __contains__(self, patient_id):
+        if self._value == patient_id:
+            return True
+        elif self.left and patient_id < self._value:
+            return patient_id in self.left
+        elif self.right and patient_id > self._value:
+            return patient_id in self.right
+        else:
+            return False
+        
+    def has_data(self, target) -> bool:
+        if self._value is None:
+            return False  
+        if self._data == target:
+            return True
+        if self.left and self.left.has_data(target):
+            return True
+        if self.right and self.right.has_data(target):
+            return True      
+        return False
+
+# Tests for add
+my_tree = Tree()
+for patient_id, initials in [(24601, "JV"), (42, "DA"), (7, "JB"), (143, "FR"), (8675309, "JNY")]:
+    my_tree.add(patient_id, initials)
+
+# should be (24601, "JV")
+print(my_tree._value)
+print(my_tree._data)
+
+# should be (42, "DA")
+print(my_tree.left._value)
+print(my_tree.left._data)
+
+# (8675309, "JNY")
+print(my_tree.right._value) 
+print(my_tree.right._data) 
+
+# (7, "JB")
+print(my_tree.left.left._value)
+print(my_tree.left.left._data)
+
+# (143, "FR")
+print(my_tree.left.right._value)
+print(my_tree.left.right._data)
+
+# 4b tests using in (not _contains_)
+# Positive tests
+print(24601 in my_tree)   # True
+print(42 in my_tree)      # True
+print(8675309 in my_tree) # True
+print(7 in my_tree)       # True
+print(143 in my_tree)     # True
+
+# Negative tests
+print(1492 in my_tree)    # False
+print(1 in my_tree)       # False
+print(2333 in my_tree)    # False
+
+# Empty tree test
+empty = Tree()
+print(0 in empty)         # False
+
+# 4c. Tests for has_data
+# Positive tests
+print("has_data('JV'):", my_tree.has_data("JV"))     # True
+print("has_data('DA'):", my_tree.has_data("DA"))     # True
+print("has_data('JB'):", my_tree.has_data("JB"))     # True
+print("has_data('FR'):", my_tree.has_data("FR"))     # True
+print("has_data('JNY'):", my_tree.has_data("JNY"))   # True
+
+# Negative tests
+print("has_data('ABC'):", my_tree.has_data("ABC"))   # False
+print("has_data(24601):", my_tree.has_data(24601))   # False (24601 is a key, not a data)
+
+# Empty tree test
+empty = Tree()
+print("empty.has_data('BALABALA') ->", empty.has_data("BALABALA"))  # False
+
+# 4d
+import time, random, math
+import matplotlib.pyplot as plt
+
+def build_random_tree(n):
+    keys = random.sample(range(1, 100*n), n)
+    tree = Tree()
+    for i, k in enumerate(keys):
+        tree.add(k, f"Peter{i}")  
+    return tree, keys
+
+def time_contains(tree, query_keys):
+    start = time.perf_counter()
+    hits = 0
+    for value in query_keys:
+        if value in tree:
+            hits += 1
+    end = time.perf_counter()
+    return (end - start) / len(query_keys), hits
+
+def time_has_data(tree, query_data):
+    start = time.perf_counter()
+    hits = 0
+    for data in query_data:
+        if tree.has_data(data):
+            hits += 1
+    end = time.perf_counter()
+    return (end - start) / len(query_data), hits
+
+# experiment begins 
+random.seed(123)   
+sizes = [1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000]
+avg_contains = []
+avg_has_data = []
+setup_times = []
+
+
+for n in sizes:
+    t0 = time.perf_counter()
+    tree, keys = build_random_tree(n)
+    t1 = time.perf_counter()
+    setup_times.append(t1 - t0)
+
+    # queries for __contains__
+    m = 1000 # number of queries
+    # 500 hits (keys that exist)
+    existing = random.sample(keys, k=m//2) 
+    # 500 misses (numbers not in keys)
+    missing = []
+    while len(missing) < m//2:
+        x = random.randint(1, 100*n)   
+        if x not in keys:             
+            missing.append(x)
+    
+    contains_queries = existing + missing
+    random.shuffle(contains_queries)
+
+    # time __contains__
+    avg_t_contains, _ = time_contains(tree, contains_queries)
+    avg_contains.append(avg_t_contains)
+
+    # queries for has_data
+    existing_data = [f"Peter{i}" for i in random.sample(range(n), k=m//2)]
+    missing_data = [f"P{i}" for i in range(m//2)]
+    has_data_queries = existing_data + missing_data
+    random.shuffle(has_data_queries)
+
+    # time has_data
+    avg_t_hasdata, _ = time_has_data(tree, has_data_queries)
+    avg_has_data.append(avg_t_hasdata)
+
+# time plot for __contains__
+plt.figure()
+plt.loglog(sizes, avg_contains, marker='o', label="__contains__ (key search)")
+plt.xlabel("n (nodes)")
+plt.ylabel("Avg time per query (seconds)")
+plt.title("__contains__ Performance")
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/4d_contains.png", dpi=200)
+
+# time plot for has_data
+plt.figure()
+plt.loglog(sizes, avg_has_data, marker='s', label="has_data (data search)")
+plt.xlabel("n (nodes)")
+plt.ylabel("Avg time per query (seconds)")
+plt.title("has_data Performance")
+plt.legend()
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/4d_has.png", dpi=200)
+
+# Comparison plot 
+line1, = plt.loglog(sizes, avg_contains, marker='o', label="__contains__ (key search)")
+line2, = plt.loglog(sizes, avg_has_data, marker='s', label="has_data (data search)")
+plt.xlabel("n (nodes)")
+plt.ylabel("Avg time per query (seconds)")
+plt.title("Performance Comparison")
+plt.legend(handles=[line1, line2]) 
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/4d_compare.png", dpi=200)
+
+# setup time analysis 
+c_lin  = setup_times[0] / sizes[0]                    
+c_quad = setup_times[-1] / (sizes[-1] ** 2)   
+ref_n     = [c_lin * n for n in sizes]
+ref_n2    = [c_quad * (n**2) for n in sizes]
+
+plt.figure()
+plt.loglog(sizes, setup_times, marker='o', label="Setup time")
+plt.loglog(sizes, ref_n, linestyle='--', label="~ n")
+plt.loglog(sizes, ref_n2, linestyle='--', label="~ n log n")
+plt.xlabel("n (nodes)")
+plt.ylabel("Total build time (seconds)")
+plt.title("BST Setup Time")
+plt.legend()
+plt.grid(True, which="both", ls=":")
+plt.tight_layout()
+plt.savefig("plots/4d_setup.png", dpi=200)
+
