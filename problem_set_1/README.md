@@ -5,7 +5,7 @@
 - Python 3.x required  
 - Install dependencies:  
   ```bash
-  pip install pandas matplotlib sqlite3
+  pip install matplotlib numpy
 
 ### Exercise 1: Efficiently search patient data
 **1a. Plot Age Distribution**<br> 
