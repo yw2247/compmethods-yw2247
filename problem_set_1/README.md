@@ -70,7 +70,7 @@ The patient who is exactly 41.5 years old: {'name': 'John Braswell', 'age': 41.5
 *Hint: There is a solution that follows almost immediately from the solution to 1e.*<br>
 There are 150471 patients who are at least 41.5 years old.<br>
 
-**1g. Function for Age Range Query**
+**1g. Function for Age Range Query**<br>
 *Write a function that, in O(log n) time, returns the number of patients who are at least low_age years old but strictly less than high_age years old.*<br>
 After sorting ages in ascending order, the function uses two binary searches to find the start and end indices of the interval [low_age,high_age). The count is the difference of those indices. Each query is O(log n).
 
@@ -102,7 +102,7 @@ Additional Assertions:<br>
 Expanding the interval shouldn't decrease the count: e.g., [40, 50) <= [18, 50); [10, 40) >= [10, 25).<br>
 Another assertion for non-overlapping pieces add up to n (324357): [-∞, 41.5) + [41.5, 41.5) + [41.5, ∞) = n.<br>
 
-**1h. Function for Age and Gender Range Query**
+**1h. Function for Age and Gender Range Query**<br>
 *Modify your previous function(s) to also return the number of males in the specified age range, all in O(log n) time after initial data setup.*<br>
 *Test this function thoroughly and justify its correctness.*<br>
 Partition of the full range (totals and males; totals should sum to n = 324357; males should sum to 158992):<br>
@@ -133,11 +133,11 @@ Expanding an interval shouldn't decrease counts (for totals and males): e.g., [4
 Another assertion for non-overlapping pieces add up to full span (for totals and males): [-∞, 41.5) + [41.5, 41.5) + [41.5, ∞) = full span.<br>
 
 ### Exercise 2: Low-level standards and their implications
-**2a. Understanding the function**
+**2a. Understanding the function**<br>
 *Explain the logic behind this function; i.e., what does it appear that they are trying to do? What's the relationship between tstop, delta_t, and the number of doses administered?*<br>
 The function is designed to simulate giving medication at regular intervals. It starts at time t = 0, and as long as the time is less than the total time tstop, it gives a dose and then adds delta_t to the time. Here, delta_t is the gap between doses, tstop is the overall treatment duration, and the number of doses depends on how many gaps of size delta_t fit before reaching tstop.
 
-**2b. A first test case**
+**2b. A first test case**<br>
 *What happens when you call: administer_meds(0.25, 1)?* <br>
 The function prints at t = 0, 0.25, 0.5, 0.75, so 4 doses are given as expected.<br>
 Full result: <br>
@@ -146,7 +146,7 @@ Administering meds at t=0.25<br>
 Administering meds at t=0.5<br>
 Administering meds at t=0.75<br>
 
-**2c. A second test case**
+**2c. A second test case**<br>
 *What happens when you call: administer_meds(0.1, 1)*<br>
 The function prints lines like t=0.30000000000000004 and it prints an extra time at about t=0.9999999999999999, so we get 11 doses instead of the expected 10.<br>
 Full result:<br>
@@ -162,20 +162,19 @@ Administering meds at t=0.7999999999999999<br>
 Administering meds at t=0.8999999999999999<br>
 Administering meds at t=0.9999999999999999<br>
 
-**2d. Interpreting the surprise**
+**2d. Interpreting the surprise**<br>
 *Discuss your findings. Did you always get the exact times you expected? Did you always get the number of doses you expected?*<br>
 No, I didn't get the exact times and number of doses as I expected. The times don’t always print as neat decimals because computers can’t store numbers like 0.3 or 0.9 exactly in binary. Some values (like 0.1 or 0.2) round nicely when printed, but others show up as 0.30000000000000004 or 0.8999999999999999.<br>
 This tiny error also makes the loop run too many times. Instead of stopping at exactly t = 1.0, the program ends at t = 0.9999999999999999, which is still less than 1, so it prints one extra dose.
 
-**2e. Clinical implications**
+**2e. Clinical implications**<br>
 *Comment on the clinical significance (or insignificance) of each “surprise.” Why might even small deviations be important in a medical setting?*<br>
 In real devices, even small mistakes can matter a lot. For example, an extra or missed dose could be harmful if the medicine is strong, like insulin or heart drugs. Also, small drifts in timing could make the treatment go out of sync with other equipment or safety checks. That’s why predictable and exact behavior is very important in medical settings.
 
-**2f. A safer implementation**
+**2f. A safer implementation**<br>
 *Write a revised version of administer_meds that avoids surprises and behaves predictably.*<br>
 *Explain what you changed and why it works better.*<br>
-The problem comes from adding delta_t over and over, which builds up small errors. A safer way is that we can count how many steps fit in tstop and calculate each time directly. This avoids rounding errors and gives the right number of doses.
-
+I changed the function to use Python’s Decimal type instead of normal floats. This avoids tiny rounding errors, so numbers like 0.3 or 0.9 print exactly as expected. It also stops the loop at the right time, so the number of doses is predictable and consistent.
 
 ### Exercise 3: Algorithm Analysis and Performance Measurement
 **3a. Hypothesize the Operation**<br>
@@ -191,7 +190,7 @@ I tested both alg1 and alg2 on several datasets (generated by data1, data2, data
 | Manual random list | `[10, 3, 3, 4.1, 0, 7.99, 100, 2, 0, 1, -1, -0.01]` | `[-1, -0.01, 0, 0, 1, 2, 3, 3, 4.1, 7.99, 10, 100]` | `[-1, -0.01, 0, 0, 1, 2, 3, 3, 4.1, 7.99, 10, 100]` | yes     |
 | Empty list         | `[]`                                                | `[]`                                                | `[]`                                                | yes     |
 
-**3b. Explain the algorithms**
+**3b. Explain the algorithms**<br>
 *Provide an intuitive, high-level explanation of how alg1 works. Describe the overall approach without going into line-by-line detail.*<br>
 alg1 (Bubble Sort):<br>
 This algorithm goes through the list from left to right repeatedly and swaps neighbors if they are in the wrong order. After each pass, the biggest value moves to the end of the list, like a bubble rising to the top. The improvement here is the early exit check. If a whole pass finishes without any swaps, the algorithm stops right away because the list is already sorted. This makes it quick on sorted or nearly sorted lists (about O(n) time), but on average or in the worst case it still takes O(n²), which is slow for large and messy lists.
@@ -199,7 +198,7 @@ This algorithm goes through the list from left to right repeatedly and swaps nei
 alg2 (Merge Sort):<br>
 This algorithm sorts by dividing the list into smaller parts, sorting those parts, and then merging them back together. The list is split in half again and again until only single elements remain. Then the halves are merged: at each step, the smaller front element is picked and added to the new list. Because of this structured process, the algorithm always runs in about O(n log n) time, no matter how the input looks, which makes it reliable and efficient for large lists.
 
-**3c. Performance Measurement and Analysis**
+**3c. Performance Measurement and Analysis**<br>
 *Time the performance of alg1 and alg2 using time.perf_counter for various sizes of data n. Use the data1 function to generate the data.*<br>
 Times are generated using data1 with sizes = [1, 3, 13, 51, 193, 719, 2682, 10000] respectively.<br>
 Example times of alg1 on data1:<br>
@@ -249,7 +248,7 @@ Comparison of performance for alg1 and alg2 on d3:
 
 <img src="plots/3c_compare_d3.png" width="700"/>
 
-**3d. Conclusions and recommendations**
+**3d. Conclusions and recommendations**<br>
 *Discuss how the performance scales across the three data sets.*<br>
 data1 (random floats):<br>
 alg1: grows ≈ O(n²).<br>
@@ -274,12 +273,12 @@ If we want safe performance without guessing about the data: Use alg2. It stays 
 Thereofore, pick merge sort by default, especially for big or messy data; use bubble sort with early exit only for small lists that are already or almost sorted.<br>
 
 ### Exercise 4: Implementing and Analyzing a Binary Search Tree as a tool for organizing data
-# 4a. Implement the add Method 
+**4a. Implement the add Method** <br>
 *Extend the given Tree class to create a binary search tree. Implement the add method to insert a value and associated data (e.g., patient ID and patient information) into the tree according to the rules for a binary search tree.*<br>
 my_tree is constructed successfully using the add method.
 
-# 4b. Implement a __contains__ Method
-*Test this functionality. (Include your tests in the readme. In your tests, be sure to use in not __contains__.)*
+**4b. Implement a __contains__ Method**<br>
+*Test this functionality. (Include your tests in the readme. In your tests, be sure to use in not __contains__.)*<br>
 Positive tests:<br>
 print(24601 in my_tree)   # True<br>
 print(42 in my_tree)      # True<br>
@@ -300,7 +299,7 @@ Keys that were inserted (24601, 42, 7, 8675309, 143) return True.<br>
 Keys not present (1492, 1, 2333) return False.<br>
 An empty tree correctly reports False for any key.<br>
 
-# 4c. Implement and Test a has_data Method
+**4c. Implement and Test a has_data Method**<br>
 *Test your method and provide evidence that it works.*<br>
 Positive tests:<br>
 has_data('JV'): True<br>
@@ -320,7 +319,7 @@ Data that was inserted ('JV', 'DA', 'JB', 'FR', 'JNY') returns True.<br>
 Data not present ('ABC') returns False. 24601 was intended to be a key, not a data, so it returns False. <br>
 An empty tree correctly reports False for any data.<br>
 
-# 4d. Performance Analysis of __contains__ and has_data
+**4d. Performance Analysis of __contains__ and has_data**<br>
 *Timing the __contains__ Method: Populate the tree with random patient IDs and associated data of various sizes n. Measure the time taken for multiple in operations (after the tree has been constructed). Plot these timings on a log-log graph. The graph should show that the time required for checking if a number is in the tree approaches O(logn) for sufficiently large n.*<br>
 
 
@@ -329,12 +328,12 @@ An empty tree correctly reports False for any data.<br>
 
 *Setup Time Analysis: Measure and plot the time to construct the tree for various sizes. The runtime should be between curves representing O(n) and O(n^2).*<br>
 
-# 4e. Discussing Choice of Test Data
+**4e. Discussing Choice of Test Data**<br>
 *Explain why it is unrepresentative to always use a specific value (e.g., patient_id = 1) as test data or to only use one test point for performance analysis. Discuss the implications of choosing appropriate test data for accurately assessing performance.*<br>
 Always using the same value (e.g., patient_id = 1) or only one test point gives a biased view of performance. The time to search in a binary search tree depends on how deep the value is in the tree and whether it is found or not. A single fixed value may be very fast or very slow, but it does not reflect the average case. Also, one measurement cannot show how runtime changes as the tree grows. To assess performance fairly, we need many test values (both present and absent) across different tree sizes. This provides a more accurate picture of average behavior and allows us to see whether the results match the expected growth rates (log n for key search and linear for data search).
 
 ### Exercise 5: Choosing ontologies for clinical research data
-# 5a. Recommended ontology set
+**5a. Recommended ontology set**<br>
 1. SNOMED CT (SCTID) — for clinician notes and imaging reports (findings, anatomy, procedures)<br>
 - Gap it fills: Gives a single, standard way to label problems, symptoms, body sites, and procedures, which is something the drug and genomics vocabularies don’t cover.<br>
 - How complete/specific: Very large and detailed; good for turning free text in notes and radiology/pathology reports into consistent, searchable terms.<br>
@@ -360,9 +359,9 @@ Always using the same value (e.g., patient_id = 1) or only one test point gives 
 - How complete/specific: Radiology-focused and well-maintained by RSNA; widely used for protocol naming and search. It also links to the RSNA/LOINC Playbook.
 - Why it helps across data types: Pairs nicely with SCTID/NCIt. You can search findings/diagnoses (SNOMED/NCIt) together with standardized exam/protocol names (RadLex).
 
-This keeps the set small but covers everything we need: genes, meds, clinical text, and imaging contents.
+This keeps the set small but covers everything we need: genes, meds, clinical text, and imaging contents.<br>
 
-# 5b. Licensing and alternatives
+**5b. Licensing and alternatives**<br>
 1) SNOMED CT (SCTID)
 - License / access: It's free to use in the United States through a UMLS account, which requires accepting the UMLS license terms. Outside the U.S., use follows SNOMED International’s country/affiliate rules.
 - Alternative: MONDO Disease Ontology (CC BY 4.0) (free to use worldwide; strong for disease normalization across sources). 
@@ -392,14 +391,14 @@ This keeps the set small but covers everything we need: genes, meds, clinical te
 - Why the preferred choice is still better: It's better if we want clear, human-friendly names for exams and protocols. RadLex is designed for clinicians, uses easy-to-read labels, and links to the RSNA/LOINC Playbook, which makes search, protocol naming, and QA dashboards easier.
 - Discovery/maintenance trade-offs: RADLEX is maintained by RSNA, updated regularly, widely used in radiology. It's easy to browse and download.
 
-# 5c. Search methodology and stopping rule
-Search methodology: 
+**5c. Search methodology and stopping rule**<br>
+Search methodology: <br>
 
 1) Start with realistic text, then run a recommender.<br>
 I submitted short sentences that look like our data to NCBO BioPortal Ontology Recommender.<br>
 Example texts: “CT chest with contrast shows a 12 mm ground-glass nodule; pathology report: lung adenocarcinoma, PD-L1 positive; NGS found EGFR exon 19 deletion; patient started osimertinib.”<br>
 
-2) Check official catalogs/pages.
+2) Check official catalogs/pages.<br>
 I confirmed scope, updates, and licenses in OBO Foundry (SO), NCBO BioPortal, and steward sites: NLM/UMLS (SNOMED CT, RxNorm), NCI EVS (NCIt), and RSNA RadLex pages (for RadLex and Playbook/LOINC-RSNA links).<br>
 
 3) Quick coverage check.
@@ -418,19 +417,19 @@ I mapped a few real phrases:<br>
 “CT pulmonary angiography / MR T2 FLAIR” (exam/protocol names) → RadLex<br>
 These checks showed each ontology covers a distinct need with little overlap.<br>
 
-Stopping rule:
+Stopping rules:<br>
 
-1) Rule 1: One primary per data type.<br>
+- Rule 1: One primary per data type.<br>
 SO (molecular), SNOMED CT (clinical/notes + imaging findings), RxNorm (meds), RadLex (radiology imaging concepts/protocol names).<br>
 
-2) Rule 2: One cross-cutting cancer layer.<br>
+- Rule 2: One cross-cutting cancer layer.<br>
 Add NCIt for histology, staging, and biomarkers that appear in notes, imaging, and molecular results.<br>
 
-3) Rule 3: No duplication.<br>
+- Rule 3: No duplication.<br>
 Do not include two ontologies for the same slice (e.g., a second drug ontology).<br>
 
-4) Rule 4: Handle heavy overlap by picking one.<br>
+- Rule 4: Handle heavy overlap by picking one.<br>
 If two options overlap a lot on the same concept set (>~40%), keep the one with better mapping for hospital use.<br>
 
-5) Rule 5: Must be practical to maintain.<br>
+- Rule 5: Must be practical to maintain.<br>
 Each ontology must have stable releases and easy access (UMLS/EVS/OBO/RSNA downloads and APIs).<br>
