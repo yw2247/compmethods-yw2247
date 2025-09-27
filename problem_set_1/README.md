@@ -236,7 +236,7 @@ Comparison of performance for alg1 and alg2 on d1:
 
 Apparent big-O scaling of each algorithm on d1:<br>
 alg1 (bubble sort): Runtime grows approximately O(n^2) on data1. We can see that the log–log curve is steep and close to a slope of ~2.<br>
-alg2 (merge sort): Runtime grows approximately O(nlogn) regardless of input order. We can see that the log–log curve is much shallower than n^2, which is consistent with nlogn.<br>
+alg2 (merge sort): Runtime grows approximately O(nlogn). We can see that the log–log curve is much shallower than n^2 but steeper than linear, which is consistent with nlogn.<br>
 
 *Repeat the timing and plotting process using the data2 function to generate data.*<br>
 Comparison of performance for alg1 and alg2 on d2:
@@ -342,7 +342,7 @@ Always using the same value (e.g., patient_id = 1) or only one test point gives 
 
 ### Exercise 5: Choosing ontologies for clinical research data
 **5a. Recommended ontology set**<br>
-1. SNOMED CT (SCTID) — for clinician notes and imaging reports (findings, anatomy, procedures)<br>
+1. SNOMED CT (SCTID) - for clinician notes and imaging reports (findings, anatomy, procedures)<br>
 - Gap it fills: Gives a single, standard way to label problems, symptoms, body sites, and procedures, which is something the drug and genomics vocabularies don’t cover.<br>
 - How complete/specific: Very large and detailed; good for turning free text in notes and radiology/pathology reports into consistent, searchable terms.<br>
 - Why it helps across data types: The same anatomy/findings terms work in both notes and imaging narratives, so searches line up across sources.<br>
@@ -409,7 +409,7 @@ Example texts: “CT chest with contrast shows a 12 mm ground-glass nodule; path
 2) Check official catalogs/pages.<br>
 I confirmed scope, updates, and licenses in OBO Foundry (SO), NCBO BioPortal, and steward sites: NLM/UMLS (SNOMED CT, RxNorm), NCI EVS (NCIt), and RSNA RadLex pages (for RadLex and Playbook/LOINC-RSNA links).<br>
 
-3) Quick coverage check.
+3) Quick coverage check.<br>
 Molecular/variants: Sequence Ontology (SO)<br>
 Clinical/notes (+ imaging findings): SNOMED CT<br>
 Medications: RxNorm<br>
