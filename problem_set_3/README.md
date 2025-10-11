@@ -29,7 +29,7 @@ Using only one hash function gave many false positives and poor accuracy. With t
 **1c. Analysis and Reflection**<br> 
 *Plot the Effect of Filter Size and Number of Hash Functions*<br>
 
-<img src="plots/1c" width="700"/>
+<img src="plots/1c.png" width="700"/>
 
 *Approximately how many bits are necessary to achieve 85% good suggestions with each combination of 1, 2, or 3 hash functions?*<br>
 
