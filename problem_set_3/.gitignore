@@ -1,0 +1,10 @@
+# Ignore large data files
+data/
+*.fasta
+*.fa
+*.gz
+*.json
+*.txt
+
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
