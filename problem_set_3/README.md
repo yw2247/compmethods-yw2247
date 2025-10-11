@@ -101,7 +101,7 @@ I generated 225280241 valid 15-mers. <br>
 Code Appendix. 
 
 **3c. Estimating distinct counts**<br> 
-t= number of hash functions
+t= number of hash functions<br> 
 t=   1  mean(min/M)=5.672346e-09  estimate distinct counts≈176,293,902<br> 
 t=   2  mean(min/M)=3.303725e-09  estimate distinct counts≈302,688,644<br> 
 t=   5  mean(min/M)=2.849762e-09  estimate distinct counts≈350,906,525<br> 
@@ -120,10 +120,10 @@ When more hash functions are used, the estimate usually becomes closer to the tr
 The estimates become more stable and consistent as the number of hashes increases. With only one or two hashes, the results can vary a lot between runs because a single random hash may strongly influence the outcome. A single hash can give very different estimates each time, while using many hashes produces results that are much more repeatable.
 
 **3e. Justification of design choices**<br>
-*How you selected values for a.*
+*How you selected values for a.*<br> 
 Each hash function uses a different random base value a to create independent hashes. I randomly chose distinct odd integers smaller than the large prime modulus M = 2^61-1. Using odd and distinct values helps avoid collisions and makes the hash functions behave more independently. I also used a fixed random seed to keep results reproducible.
 
-*Any optimizations you made (e.g., rolling updates, pre-encoding).*
+*Any optimizations you made (e.g., rolling updates, pre-encoding).*<br> 
 As instructed in the assignment, I used a rolling hash update so that each new k-mer’s hash could be computed in O(1) time by reusing the previous hash instead of recalculating it from scratch. I also pre-encoded the DNA sequence by mapping each character (A, C, G, T, N, X) to numbers (1–6) before hashing, which speeds up the computation. I also vectorized the hash calculations with NumPy so all hash functions update together, which greatly reduces runtime on the full chromosome.
 
 ### Exercise 4: Thinking about health and the Internet
