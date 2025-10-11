@@ -301,7 +301,7 @@ eval3  = evaluate(bloom3, "data/typos.json", hash_funcs3, dict_words)
 print(eval1, eval2, eval3)
 
 # 1c. Analysis and Reflection 
-sizes = [int(1e1), int(1e2), int(1e3), int(1e4), int(1e5), int(1e6), int(2e6), int(5e6), int(1e7), int(2e7), int(5e7), int(1e8)]
+sizes = [int(m * 10**e) for e in range(5, 10) for m in (1, 2, 5)]
 hashsets = {
     1: [my_hash],
     2: [my_hash, my_hash2],
