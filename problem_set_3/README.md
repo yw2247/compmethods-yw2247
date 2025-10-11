@@ -102,11 +102,11 @@ Code Appendix.
 
 **3c. Estimating distinct counts**<br> 
 t= number of hash functions<br> 
-t=   1  mean(min/M)=5.672346e-09  estimate distinct counts≈176,293,902<br> 
-t=   2  mean(min/M)=3.303725e-09  estimate distinct counts≈302,688,644<br> 
-t=   5  mean(min/M)=2.849762e-09  estimate distinct counts≈350,906,525<br> 
-t=  10  mean(min/M)=3.327625e-09  estimate distinct counts≈300,514,665<br> 
-t= 100  mean(min/M)=3.855155e-09  estimate distinct counts≈259,392,924<br> 
+t=   1  , mean(min/M)=5.672346e-09  , estimate distinct counts≈176,293,902<br> 
+t=   2  , mean(min/M)=3.303725e-09  , estimate distinct counts≈302,688,644<br> 
+t=   5  , mean(min/M)=2.849762e-09  , estimate distinct counts≈350,906,525<br> 
+t=  10  , mean(min/M)=3.327625e-09  , estimate distinct counts≈300,514,665<br> 
+t= 100  , mean(min/M)=3.855155e-09  , estimate distinct counts≈259,392,924<br> 
 
 **3d. Evaluation and analysis**<br>
 *Plot the estimated distinct count against the true number of distinct 15-mers for varying numbers of hash functions.*
