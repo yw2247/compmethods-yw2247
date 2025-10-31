@@ -5,7 +5,7 @@
 - Python 3.x required  
 - Install dependencies:  
   ```bash
-  pip install pandas matplotlib sqlite3
+  pip install pandas numpy matplotlib requests tqdm torch scikit-learn transformers
 
 ### Exercise 1: Retrieving PubMed Data via Entrez API<br>
 **1a. Retrieve PubMed IDs for Alzheimer’s and Cancer Papers**<br> 
