@@ -9,10 +9,9 @@
 
 ## Exercise 1: Gradient Descent for Neural Network Parameter Optimization
 
-1. Is http://ramcdougal.com/cgi-bin/error_function.py?a=0.4&b=0.2 a clean URL? <br>
+*Is http://ramcdougal.com/cgi-bin/error_function.py?a=0.4&b=0.2 a clean URL?* <br>
 No. A clean URL is human-readable and hides implementation details. The URL above exposes both the script path (/cgi-bin/error_function.py) and query parameters. A cleaner version would look like (e.g., /error/a/0.4/b/0.2). 
 
-2. Gradient Descent Implementation (2D)
 ### How I estimated the gradient
 
 Since the API only returns error values and does not provide derivatives, I used finite differences to approximate the gradient. For a point (a, b), I estimated the partial derivatives as: 
@@ -46,7 +45,6 @@ I stop the algorithm when the gradient is very small or when the updates to a an
 Maximum iterations: <br>
 I include a limit on the number of steps so the code does not call the API too many times. This keeps the program efficient and prevents unnecessary server load. <br>
 
-3. Finding the Local and Global Minima
 ### Local and Global Minima
 
 I ran the algorithm from several different starting points:
@@ -201,21 +199,27 @@ PCA Plot of Standardized Data (Unzoomed):
 <img src="pca_plot_unzoomed.png" width="550"/>
 
 PCA Plot of Standardized Data (Zoomed Near Origin):
+
 <img src="pca_plot_zoomed.png" width="550"/>
 
 K-Means Clustering (k = 7) Projected onto First Two Principal Components: 
 
 <img src="pca_cluster_plot.png" width="550"/>
 
-1. Why do we see only 6 clusters when k = 7 in the image below?<br>
+K-Means Clustering (k = 7) Projected onto First Two Principal Components (provided by the problem): 
+
 <img src="q4_problem.png" width="550"/>
+
+1. Why do we see only 6 clusters when k = 7 in the image above?<br>
 Even though k-means creates 7 clusters in the full 14-dimensional space, the plot only shows the first two PCA components. Two of the clusters are mainly separated in the other dimensions, so when everything is projected into 2D, those two clusters land almost on top of each other. As a result, the figure shows only about 6 visible clusters even though all 7 exist.
 
 2. Why do clusters look overlapping/non-convex, with three centers in the brown region and none in the blue?<br>
 K-means still makes convex and non-overlapping clusters in the original 14D space. The strange shapes come from projecting the data into only two PCA directions. When high-dimensional clusters are flattened into 2D, their regions can overlap, and different cluster centers can project to nearly the same place. That’s why several centers appear inside the brown region and the blue center doesn’t appear in the middle of the blue points.
 
 3. Is this a representative view of the clusters? Does plotting smaller points change your understanding?<br>
-No, this plot is not fully representative because it only uses PC1 and PC2. The clusters may be separated in higher dimensions even if they overlap here. When the points are plotted smaller, it becomes easier to see that many colors are mixed together in the center, which shows even more clearly that the 2D view hides much of the real separation that exists in 14-D.
+No, this plot is not fully representative because it only uses PC1 and PC2. The clusters may be separated in higher dimensions even if they overlap here. When the points are plotted smaller, it becomes easier to see that many colors are mixed together in the center, which shows even more clearly that the 2D view hides much of the real separation that exists in 14D.
+
+K-Means Clustering (k = 7) Projected onto First Two Principal Components (smaller points): 
 
 <img src="pca_cluster_plot2.png" width="550"/>
 
@@ -266,19 +270,17 @@ Visiting /add/5/3 will call add(5, 3) and return the result. Routes can also spe
 
 In the flask-example folder there are three main files that work together:<br>
 
-server.py<br>
+1. server.py:<br>
 This is the main Python program that creates the Flask app and starts the web server (app = Flask(__name__), app.run()).<br>
 It defines two routes with @app.route:
+- "/" calls the index() function, which returns render_template("index.html") and shows the input page.
+- "/analyze" with methods=["POST"] calls the analyze() function, which reads the user’s text from request.form["usertext"], analyzes it with Counter, and then returns render_template("analyze.html", analysis=result, usertext=usertext).
 
-"/" calls the index() function, which returns render_template("index.html") and shows the input page.
-
-"/analyze" with methods=["POST"] calls the analyze() function, which reads the user’s text from request.form["usertext"], analyzes it with Counter, and then returns render_template("analyze.html", analysis=result, usertext=usertext).
-
-templates/index.html<br>
+2. templates/index.html:<br>
 This is the first page the user sees. It displays a message and a form with a <textarea name="usertext"> and a submit button.<br>
 The form sends the text to the /analyze route using method="POST", so that server.py can process it.
 
-templates/analyze.html<br>
+3. templates/analyze.html:<br>
 This is the results page. It uses template placeholders {{ usertext }} and {{ analysis }} to show the original text and the analysis string passed from server.py.
 
 These files are interconnected through Flask’s routing and templating: server.py controls the logic and calls render_template to load the HTML files from the templates folder, while the HTML files define the user interface and display the data coming from Python. The key parts that make the server do something are app = Flask(__name__), the @app.route decorators, the use of request.form to read input, render_template to return pages, and app.run() to start the server.
