@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HRRP Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Lookup Result</h1>
+
+      {% if error %}
+        <div class="card error">
+          <p>{{ error }}</p>
+        </div>
+      {% else %}
+        <div class="card">
+          <p>
+            <strong>Hospital:</strong> {{ hospital }}<br>
+            <strong>Measure:</strong> {{ measure }}
+          </p>
+
+          <p><strong>Excess Readmission Ratio (ERR):</strong> {{ err }}</p>
+          <p>{{ summary }}</p>
+
+          <h3>Additional information</h3>
+          <ul>
+            <li>Predicted Readmission: {{ predicted }}</li>
+            <li>Expected Readmission Rate: {{ expected }}</li>
+          </ul>
+        </div>
+      {% endif %}
+
+      <p><a href="{{ url_for('index') }}" class="btn">Look up another hospital</a></p>
+    </div>
+  </body>
+</html>
