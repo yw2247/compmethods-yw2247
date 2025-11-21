@@ -130,7 +130,7 @@ This shows that the gap_penalty parameter is being used correctly: increasing it
 
 Therefore, these tests show that the function correctly implements Smith–Waterman and responds to changes in match, mismatch, and gap penalties exactly as expected.
 
-## Extra Credit <br>
+### Extra Credit: <br>
 
 ## Exercise 3: Sequence Alignment
 ### Setup
@@ -187,7 +187,7 @@ With k = 1, the classifier already does very well, but it can make more mistakes
 
 With k = 5, the number of errors goes down. Looking at five neighbors gives a more stable decision, since the majority vote reduces the effect of noisy or borderline points.
 
-Additionally, to ensure correctness: A brute-force k-NN (distance to every training point) was used as a baseline. The quad-tree classifier’s predictions matched the brute-force predictions with:<br>
+Additionally, to ensure correctness, a brute-force k-NN (distance to every training point) was used as a baseline. The quad-tree classifier’s predictions matched the brute-force predictions with:<br>
 99.91% agreement for k = 1<br>
 100% agreement for k = 5<br>
 This confirms that the quad-tree querying logic was implemented correctly.<br>
@@ -211,7 +211,7 @@ K-Means Clustering (k = 7) Projected onto First Two Principal Components (provid
 <img src="q4_problem.png" width="550"/>
 
 1. Why do we see only 6 clusters when k = 7 in the image above?<br>
-Even though k-means creates 7 clusters in the full 14-dimensional space, the plot only shows the first two PCA components. Two of the clusters are mainly separated in the other dimensions, so when everything is projected into 2D, those two clusters land almost on top of each other. As a result, the figure shows only about 6 visible clusters even though all 7 exist.
+Even though k-means creates 7 clusters in the full 14D space, the plot only shows the first two PCA components. Two of the clusters are mainly separated in the other dimensions, so when everything is projected into 2D, those two clusters land almost on top of each other. As a result, the figure shows only about 6 visible clusters even though all 7 exist.
 
 2. Why do clusters look overlapping/non-convex, with three centers in the brown region and none in the blue?<br>
 K-means still makes convex and non-overlapping clusters in the original 14D space. The strange shapes come from projecting the data into only two PCA directions. When high-dimensional clusters are flattened into 2D, their regions can overlap, and different cluster centers can project to nearly the same place. That’s why several centers appear inside the brown region and the blue center doesn’t appear in the middle of the blue points.
@@ -318,25 +318,25 @@ Please see the code in the folder hrrp-flask.
 
 Input:
 
-<img src="screenshots/input.png" width="550"/>
+<img src="screenshots/input.png" width="600"/>
 
 Result of the data lookup (& Multiple Analyses):
 
-<img src="screenshots/result.png" width="550"/>
+<img src="screenshots/result.png" width="600"/>
 
 Error Handling (no matching hospital + measure):
 
-<img src="screenshots/error_input.png" width="550"/>
+<img src="screenshots/error_input.png" width="600"/>
 
-<img src="screenshots/error_output.png" width="550"/>
+<img src="screenshots/error_output.png" width="600"/>
 
 Error Handling (missing fields):
 
-<img src="screenshots/error_missing.png" width="550"/>
+<img src="screenshots/error_missing.png" width="600"/>
 
 API Endpoint:
 
-<img src="screenshots/API_endpoint.png" width="550"/>
+<img src="screenshots/API_endpoint.png" width="600"/>
 
 ### Extra Credits:
 
