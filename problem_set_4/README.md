@@ -7,13 +7,13 @@
   ```bash 
   pip install requests numpy pandas matplotlib scikit-learn flask openpyxl
 
-### Exercise 1: Gradient Descent for Neural Network Parameter Optimization
+## Exercise 1: Gradient Descent for Neural Network Parameter Optimization
 
 1. Is http://ramcdougal.com/cgi-bin/error_function.py?a=0.4&b=0.2 a clean URL? <br>
 No. A clean URL is human-readable and hides implementation details. The URL above exposes both the script path (/cgi-bin/error_function.py) and query parameters. A cleaner version would look like (e.g., /error/a/0.4/b/0.2). 
 
 2. Gradient Descent Implementation (2D)
-## How I estimated the gradient
+### How I estimated the gradient
 
 Since the API only returns error values and does not provide derivatives, I used finite differences to approximate the gradient. For a point (a, b), I estimated the partial derivatives as: 
 
@@ -24,7 +24,7 @@ dE/db ≈ ( E(a, b+h) - E(a, b-h) ) / (2h)
 When a - h < 0, a + h > 1, or similarly for b, I used a one-sided difference so that the evaluation always stayed inside the domain [0,1] × [0,1]. 
 The lecture slide uses a one-sided difference because it is easier to demonstrate. In my implementation, I used central differences whenever possible because they are more accurate, and I only used one-sided differences near the boundaries where central differences cannot be used.
 
-## Numerical choices I made
+### Numerical choices I made
 I made the following numerical design choices:
 
 Finite-difference step size:      h = 1e-3 <br>
@@ -33,7 +33,7 @@ Stopping rule (gradient):         ||gradient|| < 1e-4 <br>
 Stopping rule (parameter change): sqrt((delta(a))^2 + (delta(b))^2) < 1e-5 <br>
 Maximum iterations:               200 <br>
 
-## Why these choices are reasonable
+### Why these choices are reasonable
 h = 1e-3: <br>
 I chose a small step size so the slope estimate would be reasonably accurate, but not so small that the calculation becomes unstable.
 
@@ -47,7 +47,7 @@ Maximum iterations: <br>
 I include a limit on the number of steps so the code does not call the API too many times. This keeps the program efficient and prevents unnecessary server load. <br>
 
 3. Finding the Local and Global Minima
-## Local and Global Minima
+### Local and Global Minima
 
 I ran the algorithm from several different starting points:
 
@@ -68,7 +68,7 @@ A minimum near<br>
 
 Because the second point has the smaller error value, it is the global minimum, and the first point is the local minimum. 
 
-## How I would determine local vs global minima if I did not know the answer
+### How I would determine local vs global minima if I did not know the answer
 
 If I did not already know how many minima existed, I would use the same approach described above:
 
@@ -79,8 +79,8 @@ If I did not already know how many minima existed, I would use the same approach
 - The point with the smallest error would be considered the global minimum.
 
 
-### Exercise 2: Sequence Alignment
-## Testing <br>
+## Exercise 2: Sequence Alignment
+### Testing <br>
 I tested the align function with several examples to check both correctness and the effect of the scoring parameters (match, gap_penalty, and mismatch_penalty).
 
 1. Reproducing the examples from the problem
@@ -134,14 +134,14 @@ Therefore, these tests show that the function correctly implements Smith–Water
 
 ## Extra Credit <br>
 
-### Exercise 3: Sequence Alignment
-## Setup
+## Exercise 3: Sequence Alignment
+### Setup
 This problem builds a 2D k-NN classifier without using sklearn’s k-NN. Instead of checking every point by brute force, the classifier uses a quad-tree to store the training data and quickly find nearby neighbors. The rice dataset includes seven numerical features for two rice types, Cammeo and Osmancik. 
 
-## Data Normalization and PCA
+### Data Normalization and PCA
 These seven numerical features were standardized to have mean = 0 and standard deviation = 1, using only the training set mean and standard deviation. After normalization, I applied PCA with 2 components (fitting on the training set and transforming both training and test sets). These two components are the x- and y-coordinates for each rice grain in the 2D space used by the quad-tree.
 
-## Scatterplot of PCA-Reduced Data
+### Scatterplot of PCA-Reduced Data
 Below is the scatterplot of all grains in the 2D PCA space, color-coded by type of rice:
 
 <img src="rice_pca_scatter.png" width="550"/>
@@ -149,7 +149,7 @@ Below is the scatterplot of all grains in the 2D PCA space, color-coded by type 
 *Comment on what the graph suggests about the effeciveness of using k-nearest neighbors on this 2-dimensional reduction of the data to predict the type of rice.* <br>
 The plot shows that Cammeo and Osmancik mostly form two separate groups, with some mixing in the middle. Because the two types are still somewhat apart, k-nearest neighbors should work fairly well on the 2D PCA data, though a few mistakes will happen where the groups overlap.
 
-## Quad-Tree Implementation
+### Quad-Tree Implementation
 A custom quad-tree was implemented to recursively partition the 2D PCA space:
 
 Each node stores a bounding box and either:
@@ -165,7 +165,7 @@ Helper methods implement:
 
 k-NN search expands a radius until at least k candidate points are found.
 
-## k-NN Results and Confusion Matrices
+### k-NN Results and Confusion Matrices
 A 70/30 train-test split with stratification was used.
 k = 1 Confusion Matrix:
 
@@ -194,7 +194,7 @@ Additionally, to ensure correctness: A brute-force k-NN (distance to every train
 100% agreement for k = 5<br>
 This confirms that the quad-tree querying logic was implemented correctly.<br>
 
-### Exercise 4: EEG Clustering
+## Exercise 4: EEG Clustering
 
 PCA Plot of Standardized Data (Unzoomed):
 
@@ -236,7 +236,7 @@ Run 4: -57.95, 76.28, -142.48, ...
 
 Because these centers are completely different, this cluster is unstable and depends heavily on the initialization. Overall, some clusters are found consistently, but others vary because k-means can converge to different local optima.
 
-### Exercise 5. Python and the Web
+## Exercise 5. Python and the Web
 
 I've watched the whole video on Python and the Web and asked the TFs or Professor any questions I might have on this material.
 
@@ -261,7 +261,7 @@ def add(a, b):
 ```
 Visiting /add/5/3 will call add(5, 3) and return the result. Routes can also specify which HTTP methods they accept, but this example uses the default GET method.
 
-### Exercise 6: Interactive web exploration of data set
+## Exercise 6: Interactive web exploration of data set
 *Start by examining each file in flask-example and running the server.py script. What does each file do? How are they interconnected? Are there any key parts of the files for making the server do something?*
 
 In the flask-example folder there are three main files that work together:<br>
@@ -283,7 +283,7 @@ This is the results page. It uses template placeholders {{ usertext }} and {{ an
 
 These files are interconnected through Flask’s routing and templating: server.py controls the logic and calls render_template to load the HTML files from the templates folder, while the HTML files define the user interface and display the data coming from Python. The key parts that make the server do something are app = Flask(__name__), the @app.route decorators, the use of request.form to read input, render_template to return pages, and app.run() to start the server.
 
-## Question on HRRP dataset<br>
+### Question on HRRP dataset<br>
 *Question:*<br>
 For a given hospital and readmission measure, what is its Excess Readmission Ratio (ERR), and is this better than, about the same as, or worse than the national average?
 
@@ -309,10 +309,10 @@ For READM-30-HF-HRRP, SOUTHEAST HEALTH MEDICAL CENTER has an Excess Readmission 
 3. It compares the ERR to 1.0 using the thresholds above to decide whether the performance is better than, similar to, or worse than the national average.<br>
 4. It constructs a short English sentence with the hospital name, measure name, ERR, and interpretation, and displays this on a new results page.<br>
 
-## Using Flask to create an interactive website
+### Using Flask to create an interactive website
 Please see the code in the folder hrrp-flask. 
 
-## Screenshots 
+### Screenshots 
 
 Input:
 
@@ -336,7 +336,7 @@ API Endpoint:
 
 <img src="screenshots/API_endpoint.png" width="550"/>
 
-## Extra Credits:
+### Extra Credits:
 
 1. Error handling:<br>
 If the user leaves fields blank or if no matching hospital + measure is found, the result page shows a clear error message.
